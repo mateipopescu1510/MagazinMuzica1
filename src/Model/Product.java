@@ -2,7 +2,10 @@ package Model;
 
 public abstract class Product {
 	private static int productCounter = 100;
-	private int price, warrantyMonths, discountPercent, productId;
+	private int price;
+	private int warrantyMonths;
+	private int discountPercent;
+	private final int productId;
 	private Distributor distributor;
 	
 	public Product(int price, int warrantyMonths, int discountPercent, Distributor distributor) {
