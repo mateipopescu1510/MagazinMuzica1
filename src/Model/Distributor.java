@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Objects;
+
 public class Distributor {
 	private String name, address, email;
 	
@@ -31,6 +33,18 @@ public class Distributor {
 	
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Distributor that)) return false;
+		return getName().equals(that.getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName(), getAddress(), getEmail());
 	}
 	
 	@Override

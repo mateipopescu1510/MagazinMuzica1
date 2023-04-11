@@ -1,11 +1,13 @@
 package Model;
 
+import Utils.ProductStatus;
+
 public class Album extends Product{
 	private String artist, title;
 	private int releaseYear, lengthMinutes;
 	
-	public Album(int price, int warrantyMonths, int discountPercent, Distributor distributor, String artist, String title, int releaseYear, int lengthMinutes) {
-		super(price, warrantyMonths, discountPercent, distributor);
+	public Album(int price, int warrantyMonths, int discountPercent, Distributor distributor, ProductStatus status, String artist, String title, int releaseYear, int lengthMinutes) {
+		super(price, warrantyMonths, discountPercent, distributor, status);
 		this.artist = artist;
 		this.title = title;
 		this.releaseYear = releaseYear;
@@ -49,13 +51,10 @@ public class Album extends Product{
 		return "Album{" +
 				"artist='" + artist + '\'' +
 				", title='" + title + '\'' +
-				", releaseYear=" + releaseYear +
-				", lengthMinutes=" + lengthMinutes +
 				", price=" + price +
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
-				", productId=" + productId +
-				", distributor=" + distributor +
+				", distributor=" + distributor.getName() +
 				'}';
 	}
 }

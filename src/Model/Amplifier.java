@@ -1,13 +1,14 @@
 package Model;
 
 import Utils.AmplifierType;
+import Utils.ProductStatus;
 
 public class Amplifier extends Product {
 	private int weight, wattage;
 	private AmplifierType amplifierType;
 	
-	public Amplifier(int price, int warrantyMonths, int discountPercent, Distributor distributor, int weight, int wattage, AmplifierType amplifierType) {
-		super(price, warrantyMonths, discountPercent, distributor);
+	public Amplifier(int price, int warrantyMonths, int discountPercent, Distributor distributor, ProductStatus status, int weight, int wattage, AmplifierType amplifierType) {
+		super(price, warrantyMonths, discountPercent, distributor, status);
 		this.weight = weight;
 		this.wattage = wattage;
 		this.amplifierType = amplifierType;
@@ -40,14 +41,12 @@ public class Amplifier extends Product {
 	@Override
 	public String toString() {
 		return "Amplifier{" +
-				"weight=" + weight +
 				", wattage=" + wattage +
 				", amplifierType=" + amplifierType +
 				", price=" + price +
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
-				", productId=" + productId +
-				", distributor=" + distributor +
+				", distributor=" + distributor.getName() +
 				'}';
 	}
 }

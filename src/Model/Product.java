@@ -1,5 +1,7 @@
 package Model;
 
+import Utils.ProductStatus;
+
 public abstract class Product {
 	private static int productCounter = 100;
 	protected int price;
@@ -8,13 +10,16 @@ public abstract class Product {
 	protected final int productId;
 	protected Distributor distributor;
 	
-	public Product(int price, int warrantyMonths, int discountPercent, Distributor distributor) {
+	protected ProductStatus status;
+	
+	public Product(int price, int warrantyMonths, int discountPercent, Distributor distributor, ProductStatus status) {
 		this.price = price;
 		this.warrantyMonths = warrantyMonths;
 		this.discountPercent = discountPercent;
 		this.productId = Product.productCounter;
 		Product.productCounter++;
 		this.distributor = distributor;
+		this.status = status;
 	}
 	
 	public int getPrice() {
@@ -59,8 +64,7 @@ public abstract class Product {
 				"price=" + price +
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
-				", productId=" + productId +
-				", distributor=" + distributor +
+				", distributor=" + distributor.getName() +
 				'}';
 	}
 }

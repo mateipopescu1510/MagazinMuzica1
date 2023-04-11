@@ -1,13 +1,14 @@
 package Model;
 
 import Utils.InstrumentType;
+import Utils.ProductStatus;
 
 public class Instrument extends Product{
 	private String material, variant;
 	private InstrumentType instrumentType;
 	
-	public Instrument(int price, int warrantyMonths, int discountPercent, Distributor distributor, String material, String variant, InstrumentType instrumentType) {
-		super(price, warrantyMonths, discountPercent, distributor);
+	public Instrument(int price, int warrantyMonths, int discountPercent, Distributor distributor, ProductStatus status, String material, String variant, InstrumentType instrumentType) {
+		super(price, warrantyMonths, discountPercent, distributor, status);
 		this.material = material;
 		this.variant = variant;
 		this.instrumentType = instrumentType;
@@ -40,13 +41,11 @@ public class Instrument extends Product{
 	@Override
 	public String toString() {
 		return "Instrument{" +
-				"material='" + material + '\'' +
+				"instrumentType=" + instrumentType +
 				", variant='" + variant + '\'' +
-				", instrumentType=" + instrumentType +
 				", price=" + price +
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
-				", productId=" + productId +
 				", distributor=" + distributor +
 				'}';
 	}
