@@ -3,6 +3,8 @@ package Model;
 import Utils.AmplifierType;
 import Utils.ProductStatus;
 
+import java.util.Objects;
+
 public class Amplifier extends Product {
 	private int weight, wattage;
 	private AmplifierType amplifierType;
@@ -13,7 +15,12 @@ public class Amplifier extends Product {
 		this.wattage = wattage;
 		this.amplifierType = amplifierType;
 	}
-	
+	public Amplifier(Amplifier product){
+		super(product.price, product.warrantyMonths, product.discountPercent, product.distributor, product.status);
+		this.weight = product.weight;
+		this.wattage = product.wattage;
+		this.amplifierType = product.amplifierType;
+	}
 	public int getWeight() {
 		return weight;
 	}
@@ -36,6 +43,18 @@ public class Amplifier extends Product {
 	
 	public void setAmplifierType(AmplifierType amplifierType) {
 		this.amplifierType = amplifierType;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Amplifier amplifier)) return false;
+		return getWeight() == amplifier.getWeight() && getWattage() == amplifier.getWattage() && getAmplifierType() == amplifier.getAmplifierType();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getWeight(), getWattage(), getAmplifierType());
 	}
 	
 	@Override

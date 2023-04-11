@@ -2,6 +2,8 @@ package Model;
 
 import Utils.ProductStatus;
 
+import java.util.Objects;
+
 public class Album extends Product{
 	private String artist, title;
 	private int releaseYear, lengthMinutes;
@@ -12,6 +14,14 @@ public class Album extends Product{
 		this.title = title;
 		this.releaseYear = releaseYear;
 		this.lengthMinutes = lengthMinutes;
+	}
+	
+	public Album(Album product){
+		super(product.price, product.warrantyMonths, product.discountPercent, product.distributor, product.status);
+		this.artist = product.artist;
+		this.title = product.title;
+		this.releaseYear = product.releaseYear;
+		this.lengthMinutes = product.lengthMinutes;
 	}
 	
 	public String getArtist() {
@@ -44,6 +54,18 @@ public class Album extends Product{
 	
 	public void setLengthMinutes(int lengthMinutes) {
 		this.lengthMinutes = lengthMinutes;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Album album)) return false;
+		return getArtist().equals(album.getArtist()) && getTitle().equals(album.getTitle());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getArtist(), getTitle());
 	}
 	
 	@Override

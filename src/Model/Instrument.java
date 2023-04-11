@@ -3,6 +3,8 @@ package Model;
 import Utils.InstrumentType;
 import Utils.ProductStatus;
 
+import java.util.Objects;
+
 public class Instrument extends Product{
 	private String material, variant;
 	private InstrumentType instrumentType;
@@ -12,6 +14,13 @@ public class Instrument extends Product{
 		this.material = material;
 		this.variant = variant;
 		this.instrumentType = instrumentType;
+	}
+	
+	public Instrument(Instrument product){
+		super(product.price, product.warrantyMonths, product.discountPercent, product.distributor, product.status);
+		this.material = product.material;
+		this.variant = product.variant;
+		this.instrumentType = product.instrumentType;
 	}
 	
 	public String getMaterial() {
@@ -36,6 +45,18 @@ public class Instrument extends Product{
 	
 	public void setInstrumentType(InstrumentType instrumentType) {
 		this.instrumentType = instrumentType;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Instrument that)) return false;
+		return getVariant().equals(that.getVariant()) && getInstrumentType() == that.getInstrumentType();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getVariant(), getInstrumentType());
 	}
 	
 	@Override
