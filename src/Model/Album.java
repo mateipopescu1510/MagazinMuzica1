@@ -43,4 +43,19 @@ public class Album extends Product{
 	public void setLengthMinutes(int lengthMinutes) {
 		this.lengthMinutes = lengthMinutes;
 	}
+	
+	@Override
+	public String toString() {
+		return "Album{" +
+				"artist='" + artist + '\'' +
+				", title='" + title + '\'' +
+				", releaseYear=" + releaseYear +
+				", lengthMinutes=" + lengthMinutes +
+				", price=" + price +
+				", warrantyMonths=" + warrantyMonths +
+				", discountPercent=" + discountPercent +
+				", productId=" + productId +
+				", distributor=" + distributor +
+				'}';
+	}
 }

@@ -36,4 +36,18 @@ public class Instrument extends Product{
 	public void setInstrumentType(InstrumentType instrumentType) {
 		this.instrumentType = instrumentType;
 	}
+	
+	@Override
+	public String toString() {
+		return "Instrument{" +
+				"material='" + material + '\'' +
+				", variant='" + variant + '\'' +
+				", instrumentType=" + instrumentType +
+				", price=" + price +
+				", warrantyMonths=" + warrantyMonths +
+				", discountPercent=" + discountPercent +
+				", productId=" + productId +
+				", distributor=" + distributor +
+				'}';
+	}
 }

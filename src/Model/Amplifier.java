@@ -36,4 +36,19 @@ public class Amplifier extends Product {
 	public void setAmplifierType(AmplifierType amplifierType) {
 		this.amplifierType = amplifierType;
 	}
+	
+	@Override
+	public String toString() {
+		return "Amplifier{" +
+				"weight=" + weight +
+				", wattage=" + wattage +
+				", amplifierType=" + amplifierType +
+				", price=" + price +
+				", warrantyMonths=" + warrantyMonths +
+				", discountPercent=" + discountPercent +
+				", productId=" + productId +
+				", distributor=" + distributor +
+				'}';
+	}
 }
+

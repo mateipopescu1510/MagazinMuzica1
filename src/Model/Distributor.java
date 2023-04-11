@@ -32,4 +32,13 @@ public class Distributor {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	@Override
+	public String toString() {
+		return "Distributor{" +
+				"name='" + name + '\'' +
+				", address='" + address + '\'' +
+				", email='" + email + '\'' +
+				'}';
+	}
 }

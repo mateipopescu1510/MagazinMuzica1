@@ -2,11 +2,11 @@ package Model;
 
 public abstract class Product {
 	private static int productCounter = 100;
-	private int price;
-	private int warrantyMonths;
-	private int discountPercent;
-	private final int productId;
-	private Distributor distributor;
+	protected int price;
+	protected int warrantyMonths;
+	protected int discountPercent;
+	protected final int productId;
+	protected Distributor distributor;
 	
 	public Product(int price, int warrantyMonths, int discountPercent, Distributor distributor) {
 		this.price = price;
@@ -51,5 +51,16 @@ public abstract class Product {
 	
 	public int getProductId() {
 		return productId;
+	}
+	
+	@Override
+	public String toString() {
+		return "Product{" +
+				"price=" + price +
+				", warrantyMonths=" + warrantyMonths +
+				", discountPercent=" + discountPercent +
+				", productId=" + productId +
+				", distributor=" + distributor +
+				'}';
 	}
 }
