@@ -53,6 +53,6 @@ public class Distributor {
 				"name='" + name + '\'' +
 				", address='" + address + '\'' +
 				", email='" + email + '\'' +
-				'}';
+				"}\n";
 	}
 }

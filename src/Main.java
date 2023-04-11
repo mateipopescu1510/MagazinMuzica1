@@ -17,5 +17,13 @@ public class Main {
 		System.out.println(fender);
 		System.out.println(distributors.get(0)==fender);
 		System.out.println(fender.equals(distributors.get(0)));
+		
+		Instrument g = new Instrument(4000, 12, 5, fender,ProductStatus.IN_STOCK,"wood","Stratocaster",
+				InstrumentType.ELECTRIC_GUITAR);
+		System.out.println(g.getProductId());
+		Instrument g1 = new Instrument(g);
+		System.out.println(g1.getProductId());
+		System.out.println(g == g1);
+		System.out.println(g.equals(g1));
 	}
 }

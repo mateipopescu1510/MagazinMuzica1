@@ -2,6 +2,8 @@ package Model;
 
 import Utils.ProductStatus;
 
+import java.util.Objects;
+
 public abstract class Product {
 	protected static int productCounter = 100;
 	protected int price;
@@ -66,6 +68,18 @@ public abstract class Product {
 	
 	public int getProductId() {
 		return productId;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Product product)) return false;
+		return getProductId() == product.getProductId();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getProductId());
 	}
 	
 	@Override

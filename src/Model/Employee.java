@@ -2,6 +2,8 @@ package Model;
 
 import Utils.JobTitle;
 
+import java.util.Objects;
+
 public class Employee {
 	private String name, email;
 	private int age, salary;
@@ -56,10 +58,22 @@ public class Employee {
 	}
 	
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Employee employee)) return false;
+		return getAge() == employee.getAge() && getName().equals(employee.getName()) && getEmail().equals(employee.getEmail());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName(), getEmail(), getAge());
+	}
+	
+	@Override
 	public String toString() {
 		return "Employee{" +
 				"name='" + name + '\'' +
 				", jobTitle=" + jobTitle +
-				'}';
+				"}\n";
 	}
 }
