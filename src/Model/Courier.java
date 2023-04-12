@@ -2,6 +2,8 @@ package Model;
 
 import Utils.TransportType;
 
+import java.util.Objects;
+
 public class Courier {
 	private String name;
 	private TransportType transportType;
@@ -36,6 +38,18 @@ public class Courier {
 	
 	public void setCommissionPercent(int commissionPercent) {
 		this.commissionPercent = commissionPercent;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (! (o instanceof Courier courier)) return false;
+		return getName().equals(courier.getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName());
 	}
 	
 	@Override
