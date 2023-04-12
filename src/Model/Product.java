@@ -77,6 +77,14 @@ public abstract class Product {
 		return getProductId() == product.getProductId();
 	}
 	
+	public ProductStatus getStatus() {
+		return status;
+	}
+	
+	public void setStatus(ProductStatus status) {
+		this.status = status;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(getProductId());
@@ -89,6 +97,6 @@ public abstract class Product {
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
 				", distributor=" + distributor.getName() +
-				'}';
+				"}\n";
 	}
 }

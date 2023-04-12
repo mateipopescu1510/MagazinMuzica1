@@ -77,6 +77,6 @@ public class Album extends Product{
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
 				", distributor=" + distributor.getName() +
-				'}';
+				"}\n";
 	}
 }

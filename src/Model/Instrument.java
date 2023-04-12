@@ -68,6 +68,6 @@ public class Instrument extends Product{
 				", warrantyMonths=" + warrantyMonths +
 				", discountPercent=" + discountPercent +
 				", distributor=" + distributor +
-				'}';
+				"}\n";
 	}
 }

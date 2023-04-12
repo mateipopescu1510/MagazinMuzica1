@@ -73,6 +73,9 @@ public class Employee {
 	public String toString() {
 		return "Employee{" +
 				"name='" + name + '\'' +
+				", email='" + email + '\'' +
+				", age=" + age +
+				", salary=" + salary +
 				", jobTitle=" + jobTitle +
 				"}\n";
 	}

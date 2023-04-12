@@ -39,12 +39,12 @@ public class Distributor {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (! (o instanceof Distributor that)) return false;
-		return getName().equals(that.getName()) && getEmail().equals(that.getEmail());
+		return getName().equals(that.getName());
 	}
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(getName(), getEmail());
+		return Objects.hash(getName());
 	}
 	
 	@Override
