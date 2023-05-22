@@ -31,6 +31,9 @@ public final class Menu {
 			put(11, "showAllClients");
 			put(12, "addEmployee");
 			put(13, "removeEmployee");
+			put(14, "showEmployees");
+			put(15, "addCourier");
+			put(16, "showCouriers");
 		}};
 		
 //		clients.add(new Client("Mircea Bogdan", "adresa 1", "mirceabgd@gmail.com", 23, 1 ));
@@ -101,6 +104,18 @@ public final class Menu {
 			System.out.println(client);
 		}
 	}
+	
+	private static void showEmployees(){
+		for(Employee employee: shop.getEmployees()){
+			System.out.println(employee);
+		}
+	}
+	
+	private static void showCouriers(){
+		for(Courier courier: shop.getCouriers()){
+			System.out.println(courier);
+		}
+	}
 	private static Client getClient(){
 		ArrayList<Client> clientsList = (ArrayList<Client>) clients.getClients();
 		Scanner inputClient = new Scanner(System.in);
@@ -117,7 +132,7 @@ public final class Menu {
 		return null;
 	}
 	
-	private void addProduct(){
+	private static void addProduct(){
 		Scanner inputProduct = new Scanner(System.in);
 		System.out.println("What kind of product to add to the stock? 'Instrument', 'Amplifier' or 'Album':");
 		
@@ -235,7 +250,7 @@ public final class Menu {
 		}
 	}
 	
-	private void addDistributor(){
+	private static void addDistributor(){
 		Scanner inputDistributor = new Scanner(System.in);
 		System.out.println("What is the name of the distributor?");
 		String name = inputDistributor.nextLine();
@@ -247,6 +262,34 @@ public final class Menu {
 		String email = inputDistributor.nextLine();
 		
 		shop.addDistributor(name, address, email);
+	}
+	
+	private static void addCourier(){
+		Scanner inputCourier = new Scanner(System.in);
+		System.out.println("What is the name of the courier company?");
+		String name = inputCourier.nextLine();
+		
+		System.out.println("What type of transport is provided?");
+		for(TransportType transportType: TransportType.values()){
+			System.out.print(transportType + " ");
+		}
+		System.out.println();
+		
+		TransportType transportType = null;
+		while(transportType == null){
+			String type = inputCourier.nextLine();
+			for(TransportType tr: TransportType.values()){
+				if(tr.name().equals(type)){
+					transportType = tr;
+					break;
+				}
+			}
+			System.out.println("There is no such option, try again");
+		}
+		
+		System.out.println("What is the company's commission percent?(0 - 100%)");
+		int commission = inputCourier.nextInt();
+		shop.addCourier(name, transportType, commission);
 	}
 	
 	private synchronized static void showOptions(){
@@ -264,6 +307,9 @@ public final class Menu {
 		System.out.println("11. Show all clients");
 		System.out.println("12. Add a new employee");
 		System.out.println("13. Remove an employee");
+		System.out.println("14. Show all employees");
+		System.out.println("15. Add a new courier");
+		System.out.println("16. Show all couriers");
 		System.out.println("0. Exit the application");
 	}
 	public synchronized static Menu getInstance(){
@@ -375,6 +421,19 @@ public final class Menu {
 				case 13: {
 					removeEmployee();
 					shop.updateEmployeesCSV();
+					break;
+				}
+				case 14: {
+					showEmployees();
+					break;
+				}
+				case 15: {
+					addCourier();
+					shop.updateCourierCSV();
+					break;
+				}
+				case 16: {
+					showCouriers();
 					break;
 				}
 				case 0: {

@@ -14,15 +14,12 @@ public class Shop implements ShopService{
 	private static DistributorSingleton distributors = DistributorSingleton.getInstance();
 	private static EmployeeSingleton employees = EmployeeSingleton.getInstance();
 	
-	private Set<Courier>couriers;
+	private static CourierSingleton couriers = CourierSingleton.getInstance();
 	private final String storageAddress = "Bd Dorobanti 129";
 	
 	private static Shop instance = null;
 	private Shop(){
-		couriers = new HashSet<>();
-		couriers.add(new Courier("FedEx", TransportType.INTERNATIONAL, 5));
-		couriers.add(new Courier("Cargus", TransportType.SAME_DAY, 5));
-		
+		couriers.readFromCSV();
 		distributors.readFromCSV();
 		employees.readFromCSV();
 		
@@ -59,6 +56,10 @@ public class Shop implements ShopService{
 	
 	public Set<Employee> getEmployees() {
 		return employees.getEmployees();
+	}
+	
+	public Set<Courier> getCouriers(){
+		return couriers.getCouriers();
 	}
 	
 	public void setEmployees(Set<Employee> employees) {
@@ -198,7 +199,7 @@ public class Shop implements ShopService{
 			System.out.println(name + " already works with our shop!");
 		}
 		else{
-			couriers.add(courier);
+			couriers.addCourier(courier);
 			System.out.println(name + " has been added!");
 		}
 	}
@@ -215,13 +216,17 @@ public class Shop implements ShopService{
 	}
 	
 	public Courier getCourier(String name){
-		ArrayList<Courier> couriersList = new ArrayList<>(couriers);
+		ArrayList<Courier> couriersList = new ArrayList<>(couriers.getCouriers());
 		Courier courier = new Courier(name, null, 0);
 		for (Courier c : couriersList){
 			if (c.equals(courier))
 				return c;
 		}
 		return null;
+	}
+	
+	public void updateCourierCSV(){
+		couriers.writeInCSV();
 	}
 	
 	public Instrument getInstrument(String variant, String instrumentType){

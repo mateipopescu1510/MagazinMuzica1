@@ -29,7 +29,7 @@ public class EmployeeSingleton {
 		try(var input = new BufferedReader(new FileReader(path))){
 			String line;
 			while((line = input.readLine()) != null) {
-				String[] info = line.replaceAll(" ", "").split(",");
+				String[] info = line.split(", ");
 				columns.add(info);
 			}
 		}
