@@ -1,13 +1,7 @@
 package Service;
 
-import Model.Distributor;
-import Model.Instrument;
-import Model.Order;
-import Model.Product;
-import Utils.AmplifierType;
-import Utils.Audit;
-import Utils.InstrumentType;
-import Utils.ProductStatus;
+import Model.*;
+import Utils.*;
 
 import java.util.*;
 
@@ -35,6 +29,8 @@ public final class Menu {
 			put(9, "addDistributor");
 			put(10, "confirmOrderDelivered");
 			put(11, "showAllClients");
+			put(12, "addEmployee");
+			put(13, "removeEmployee");
 		}};
 		
 //		clients.add(new Client("Mircea Bogdan", "adresa 1", "mirceabgd@gmail.com", 23, 1 ));
@@ -59,6 +55,46 @@ public final class Menu {
 		System.out.println("Client " + name + " has been successfully added to the list!");
 	}
 	
+	private static void addEmployee(){
+		Scanner inputEmp = new Scanner(System.in);
+		System.out.println("What is the name of the new employee?");
+		String name = inputEmp.nextLine();
+		System.out.println("What is the employee's email?");
+		String email = inputEmp.nextLine();
+		System.out.println("What is the new employee's age?");
+		int age = inputEmp.nextInt();
+		System.out.println("What is the new employee's salary?");
+		int salary = inputEmp.nextInt();
+		System.out.println("What is the new employee's job?");
+		for(JobTitle jobTitle: JobTitle.values()){
+			System.out.print(jobTitle + " ");
+		}
+		System.out.println();
+		
+		JobTitle jobTitle = null;
+		while (jobTitle == null) {
+			String title = inputEmp.nextLine();
+			for (JobTitle job : JobTitle.values()) {
+				if (job.name().equals(title)) {
+					jobTitle = job;
+					break;
+				}
+			}
+			System.out.println("There is no such title, try again");
+		}
+		shop.addEmployee(name, email, age, salary, jobTitle);
+	}
+	
+	private static void removeEmployee(){
+		Scanner inputEmp = new Scanner(System.in);
+		System.out.println("What is the name of the employee?");
+		String name = inputEmp.nextLine();
+		System.out.println("What is the employee's email?");
+		String email = inputEmp.nextLine();
+		System.out.println("What is the employee's age?");
+		int age = inputEmp.nextInt();
+		shop.removeEmployee(name, email, age);
+	}
 	private static void showClients(){
 		ArrayList<Client> clientsList = (ArrayList<Client>) clients.getClients();
 		for(Client client: clientsList){
@@ -226,6 +262,8 @@ public final class Menu {
 		System.out.println("9. Add a new distributor");
 		System.out.println("10. Confirm a client's order as delivered");
 		System.out.println("11. Show all clients");
+		System.out.println("12. Add a new employee");
+		System.out.println("13. Remove an employee");
 		System.out.println("0. Exit the application");
 	}
 	public synchronized static Menu getInstance(){
@@ -310,6 +348,7 @@ public final class Menu {
 				}
 				case 9: {
 					addDistributor();
+					shop.updateDistributorsCSV();
 					break;
 				}
 				case 10: {
@@ -326,6 +365,17 @@ public final class Menu {
 				}
 				case 11: {
 					showClients();
+					break;
+				}
+				case 12: {
+					addEmployee();
+					shop.updateEmployeesCSV();
+					break;
+				}
+				case 13: {
+					removeEmployee();
+					shop.updateEmployeesCSV();
+					break;
 				}
 				case 0: {
 					System.out.println("Exit.");

@@ -11,8 +11,8 @@ import java.util.Set;
 public class Shop implements ShopService{
 	public final String urlAddress = "mateisguitarshop.com";
 	private List<Product> stock;
-	private Set<Distributor> distributors;
-	private Set<Employee> employees;
+	private static DistributorSingleton distributors = DistributorSingleton.getInstance();
+	private static EmployeeSingleton employees = EmployeeSingleton.getInstance();
 	
 	private Set<Courier>couriers;
 	private final String storageAddress = "Bd Dorobanti 129";
@@ -23,21 +23,8 @@ public class Shop implements ShopService{
 		couriers.add(new Courier("FedEx", TransportType.INTERNATIONAL, 5));
 		couriers.add(new Courier("Cargus", TransportType.SAME_DAY, 5));
 		
-		
-		distributors = new HashSet<>();
-		distributors.add(new Distributor("Fender", "Calea Victoriei 164", "customerrelations@fender.com"));
-		distributors.add(new Distributor("Ibanez", "Piata Presei 27", "customerrelations@ibanez.com"));
-		distributors.add(new Distributor("Yamaha", "Stefan cel Mare 40", "customerrelations@yamaha.com"));
-		distributors.add(new Distributor("PMCmusic", "Bd Daciei 23", "customerrelations@pmcmusic.com"));
-		distributors.add(new Distributor("NONE", null, null));
-		
-		
-		employees = new HashSet<>();
-		employees.add(new Employee("Popescu Matei", "popescumatei@gmail.com", 35, 10000, JobTitle.MANAGER));
-		employees.add(new Employee("Julian Groensmit", "jgroensmit@gmail.com", 34, 9000, JobTitle.DESIGN));
-		employees.add(new Employee("Stoian Andrei", "standrei@gmail.com",37, 9500, JobTitle.BACKEND));
-		employees.add(new Employee("Garotescu Mihai", "mihaigrt@gmai.com", 31, 8000, JobTitle.CUSTOMER_SUPPORT));
-		employees.add(new Employee("Apostol Mihnea", "apmihea@gmail.com", 34, 7500, JobTitle.MAINTENANCE));
+		distributors.readFromCSV();
+		employees.readFromCSV();
 		
 		stock = new ArrayList<>();
 		stock.add(new Instrument(4000, 12, 5, getDistributor("Fender"), ProductStatus.IN_STOCK,"wood","Stratocaster",
@@ -63,19 +50,19 @@ public class Shop implements ShopService{
 	}
 	
 	public Set<Distributor> getDistributors() {
-		return distributors;
+		return distributors.getDistributors();
 	}
 	
 	public void setDistributors(Set<Distributor> distributors) {
-		this.distributors = distributors;
+		this.distributors.setDistributors((HashSet<Distributor>) distributors);
 	}
 	
 	public Set<Employee> getEmployees() {
-		return employees;
+		return employees.getEmployees();
 	}
 	
 	public void setEmployees(Set<Employee> employees) {
-		this.employees = employees;
+		this.employees.setEmployees(employees);
 	}
 	
 	public String getStorageAddress() {
@@ -155,11 +142,11 @@ public class Shop implements ShopService{
 	}
 	
 	public void addEmployee(String name, String email, int age, int salary, JobTitle jobTitle){
-		employees.add(new Employee(name, email, age, salary, jobTitle));
+		employees.addEmployee(new Employee(name, email, age, salary, jobTitle));
 	}
 	
 	public Employee getEmployee(String name, String email, int age){
-		ArrayList<Employee> emplyeesList = new ArrayList<>(employees);
+		ArrayList<Employee> emplyeesList = new ArrayList<>(employees.getEmployees());
 		Employee employee = new Employee(name, email, age, 0, null);
 		for (Employee emp : emplyeesList) {
 			if (emp.equals(employee))
@@ -169,13 +156,14 @@ public class Shop implements ShopService{
 	}
 	
 	public void removeEmployee(String name, String email, int age){
-		ArrayList<Employee> emplyeesList = new ArrayList<>(employees);
+		ArrayList<Employee> employeesList = new ArrayList<>(employees.getEmployees());
 		Employee employee = new Employee(name, email, age, 0, null);
 		boolean found = false;
-		for(Employee emp : emplyeesList){
+		for(Employee emp : employeesList){
 			if(emp.equals(employee)){
 				found = true;
-				employees.remove(employee);
+				employeesList.remove(emp);
+				employees.setEmployees(new HashSet<>(employeesList));
 				System.out.println("Employee with the name " + name + " has been removed.");
 				break;
 			}
@@ -185,15 +173,23 @@ public class Shop implements ShopService{
 		}
 	}
 	
+	public void updateEmployeesCSV(){
+		employees.writeInCSV();
+	}
+	
 	public void addDistributor(String name, String address, String email){
 		Distributor distributor = new Distributor(name, address, email);
 		if(getDistributor(name) != null){
 			System.out.println("Distributor " + name + " already works with our shop!");
 		}
 		else{
-			distributors.add(distributor);
+			distributors.addDistributor(distributor);
 			System.out.println("Distributor " + name + " has been added!");
 		}
+	}
+	
+	public void updateDistributorsCSV(){
+		distributors.writeInCSV();
 	}
 	
 	public void addCourier(String name, TransportType transportType, int commissionPercent){
@@ -209,7 +205,7 @@ public class Shop implements ShopService{
 	
 	
 	public Distributor getDistributor(String name){
-		ArrayList<Distributor> distributorsList = new ArrayList<>(distributors);
+		ArrayList<Distributor> distributorsList = new ArrayList<>(distributors.getDistributors());
 		Distributor distributor = new Distributor(name, null, null);
 		for (Distributor distr : distributorsList){
 			if(distr.equals(distributor))
