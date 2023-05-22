@@ -334,6 +334,12 @@ public final class Menu {
 					break;
 					
 			}
+			try{
+				audit.log(events.get(option));
+			}
+			catch(Exception exception){
+				System.out.println(exception.getMessage());
+			}
 		}
 	}
 
