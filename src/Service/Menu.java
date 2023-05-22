@@ -335,7 +335,8 @@ public final class Menu {
 					
 			}
 			try{
-				audit.log(events.get(option));
+				if(option != 0)
+					audit.log(events.get(option));
 			}
 			catch(Exception exception){
 				System.out.println(exception.getMessage());
