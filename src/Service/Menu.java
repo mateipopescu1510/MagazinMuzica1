@@ -5,6 +5,7 @@ import Model.Instrument;
 import Model.Order;
 import Model.Product;
 import Utils.AmplifierType;
+import Utils.Audit;
 import Utils.InstrumentType;
 import Utils.ProductStatus;
 
@@ -14,9 +15,28 @@ public final class Menu {
 	private static Menu instance = null;
 	private static Shop shop;
 	private static Set<Client> clients;
+	
+	private static Map<Integer, String> events;
+	private static Audit audit;
+	
 	private Menu(){
 		shop = Shop.getInstance();
 		clients = new HashSet<>();
+		audit = new Audit();
+		events =  new HashMap<Integer, String>(){{
+			put(1, "addClient");
+			put(2, "createOrder");
+			put(3, "cancelOrder");
+			put(4, "addProduct");
+			put(5, "calculateClientCost");
+			put(6, "showOrders");
+			put(7, "showShopStock");
+			put(8, "viewProductsOfOrder");
+			put(9, "addDistributor");
+			put(10, "confirmOrderDelivered");
+			put(11, "showAllClients");
+		}};
+		
 		clients.add(new Client("Mircea Bogdan", "adresa 1", "mirceabgd@gmail.com", 23, 1 ));
 		clients.add(new Client("Stefan Andrei", "adresa 2", "stfnandr@gmail.com", 22, 5));
 		clients.add(new Client("Ionescu Alex", "adresa 3", "ionescualex@gmail.com", 20, 7));
