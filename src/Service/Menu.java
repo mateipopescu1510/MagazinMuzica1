@@ -14,14 +14,14 @@ import java.util.*;
 public final class Menu {
 	private static Menu instance = null;
 	private static Shop shop;
-	private static Set<Client> clients;
+	private static ClientSingleton clients = ClientSingleton.getInstance();
 	
 	private static Map<Integer, String> events;
 	private static Audit audit;
 	
 	private Menu(){
 		shop = Shop.getInstance();
-		clients = new HashSet<>();
+		clients.readFromCSV();
 		audit = new Audit();
 		events =  new HashMap<Integer, String>(){{
 			put(1, "addClient");
@@ -37,9 +37,9 @@ public final class Menu {
 			put(11, "showAllClients");
 		}};
 		
-		clients.add(new Client("Mircea Bogdan", "adresa 1", "mirceabgd@gmail.com", 23, 1 ));
-		clients.add(new Client("Stefan Andrei", "adresa 2", "stfnandr@gmail.com", 22, 5));
-		clients.add(new Client("Ionescu Alex", "adresa 3", "ionescualex@gmail.com", 20, 7));
+//		clients.add(new Client("Mircea Bogdan", "adresa 1", "mirceabgd@gmail.com", 23, 1 ));
+//		clients.add(new Client("Stefan Andrei", "adresa 2", "stfnandr@gmail.com", 22, 5));
+//		clients.add(new Client("Ionescu Alex", "adresa 3", "ionescualex@gmail.com", 20, 7));
 	}
 	
 	private static void addClient(){
@@ -54,18 +54,19 @@ public final class Menu {
 		int age = inputClient.nextInt();
 		System.out.println("Does the client have a special discount? (0 - 100%)");
 		int discoutPercent = inputClient.nextInt();
-		clients.add(new Client(name, address, email, age, discoutPercent));
+		Client client = new Client(name, address, email, age, discoutPercent);
+		clients.addClient(client);
 		System.out.println("Client " + name + " has been successfully added to the list!");
 	}
 	
 	private static void showClients(){
-		ArrayList<Client> clientsList = new ArrayList<>(clients);
+		ArrayList<Client> clientsList = (ArrayList<Client>) clients.getClients();
 		for(Client client: clientsList){
 			System.out.println(client);
 		}
 	}
 	private static Client getClient(){
-		ArrayList<Client> clientsList = new ArrayList<>(clients);
+		ArrayList<Client> clientsList = (ArrayList<Client>) clients.getClients();
 		Scanner inputClient = new Scanner(System.in);
 		System.out.println("What is the name of the client?");
 		String name = inputClient.nextLine();
@@ -242,6 +243,7 @@ public final class Menu {
 			switch(option){
 				case 1: {
 					addClient();
+					clients.writeInCSV();
 					break;
 				}
 				case 2: {
