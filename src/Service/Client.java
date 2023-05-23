@@ -251,7 +251,8 @@ public class Client implements ClientService{
 	public float calculateTotalCost() {
 		float totalCost = 0;
 		for(Order order : orders){
-			totalCost += order.calculateTotalCost();
+			if(order.getStatus() != OrderStatus.CANCELED)
+				totalCost += order.calculateTotalCost();
 		}
 		return totalCost * (100 - specialDiscountPercent)/100;
 	}

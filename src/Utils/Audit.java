@@ -19,6 +19,7 @@ public class Audit {
 		}
 	}
 	
+	
 	public void log(String event) throws IOException{
 		fw.append(dateFormat.format(LocalDateTime.now()));
 		fw.append(",");
