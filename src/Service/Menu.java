@@ -160,6 +160,7 @@ public final class Menu {
 		
 		System.out.println("Does it have a discout? (0 - 100%)");
 		int discountPercent = inputProduct.nextInt();
+		inputProduct.nextLine();
 		
 		System.out.println("What distributor delivers this product?");
 		String distr = inputProduct.nextLine();
@@ -248,6 +249,7 @@ public final class Menu {
 					artist, title, releaseYear, lengthMinutes);
 			System.out.println(howMany + " albums have been successfully added to the stock!");
 		}
+		inputProduct.nextLine();
 	}
 	
 	private static void addDistributor(){
@@ -337,6 +339,7 @@ public final class Menu {
 						break;
 					}
 					client.createOrder(shop);
+					shop.updateStockCSV();
 					break;
 				}
 				case 3: {
@@ -349,10 +352,12 @@ public final class Menu {
 					System.out.println(client.getOrderIds());
 					int orderId = input.nextInt();
 					client.cancelOrder(shop, orderId);
+					shop.updateStockCSV();
 					break;
 				}
 				case 4: {
 					addProduct();
+					shop.updateStockCSV();
 				}
 				case 5: {
 					Client client = getClient();

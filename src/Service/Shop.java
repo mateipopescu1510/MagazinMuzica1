@@ -3,6 +3,10 @@ package Service;
 import Model.*;
 import Utils.*;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -11,10 +15,10 @@ import java.util.Set;
 public class Shop implements ShopService{
 	public final String urlAddress = "mateisguitarshop.com";
 	private List<Product> stock;
-	private static DistributorSingleton distributors = DistributorSingleton.getInstance();
-	private static EmployeeSingleton employees = EmployeeSingleton.getInstance();
+	private DistributorSingleton distributors = DistributorSingleton.getInstance();
+	private EmployeeSingleton employees = EmployeeSingleton.getInstance();
 	
-	private static CourierSingleton couriers = CourierSingleton.getInstance();
+	private CourierSingleton couriers = CourierSingleton.getInstance();
 	private final String storageAddress = "Bd Dorobanti 129";
 	
 	private static Shop instance = null;
@@ -22,24 +26,127 @@ public class Shop implements ShopService{
 		couriers.readFromCSV();
 		distributors.readFromCSV();
 		employees.readFromCSV();
+		stock = new ArrayList<Product>();
+		readFromCSV();
 		
-		stock = new ArrayList<>();
-		stock.add(new Instrument(4000, 12, 5, getDistributor("Fender"), ProductStatus.IN_STOCK,"wood","Stratocaster",
-				InstrumentType.ELECTRIC_GUITAR));
-		stock.add(new Instrument(4000, 12, 5, getDistributor("Fender"), ProductStatus.IN_STOCK,"wood","Stratocaster",
-				InstrumentType.ELECTRIC_GUITAR));
-		stock.add(new Album(50, 1, 5, getDistributor("PMCmusic"), ProductStatus.IN_STOCK, "AC/DC", "Back in Black",
-				1981,
-				49));
-		stock.add(new Album(60,1,4,getDistributor("PMCmusic"),ProductStatus.OUT_OF_STOCK, "Metallica", "Hardwired",
-				2016,
-				65));
-		stock.add(new Amplifier(1800, 24, 10, getDistributor("Ibanez"), ProductStatus.LIMITED, 10, 50,
-				AmplifierType.SOLID_STATE));
+//		stock = new ArrayList<>();
+//		stock.add(new Instrument(4000, 12, 5, getDistributor("Fender"), ProductStatus.IN_STOCK,"wood","Stratocaster",
+//				InstrumentType.ELECTRIC_GUITAR));
+//		stock.add(new Instrument(4000, 12, 5, getDistributor("Fender"), ProductStatus.IN_STOCK,"wood","Stratocaster",
+//				InstrumentType.ELECTRIC_GUITAR));
+//		stock.add(new Album(50, 1, 5, getDistributor("PMCmusic"), ProductStatus.IN_STOCK, "AC/DC", "Back in Black",
+//				1981,
+//				49));
+//		stock.add(new Album(60,1,4,getDistributor("PMCmusic"),ProductStatus.OUT_OF_STOCK, "Metallica", "Hardwired",
+//				2016,
+//				65));
+//		stock.add(new Amplifier(1800, 24, 10, getDistributor("Ibanez"), ProductStatus.LIMITED, 10, 50,
+//				AmplifierType.SOLID_STATE));
+	}
+	
+	private void readFromCSV(){
+		List<String[]>columns = getFromCSV("src/Data/stock.csv");
+		for(String[] line: columns){
+			int price = Integer.parseInt(line[1]);
+			int warrantyMonths = Integer.parseInt(line[2]);
+			int discountPercent = Integer.parseInt(line[3]);
+			Distributor distributor = getDistributor(line[4]);
+			ProductStatus productStatus = ProductStatus.valueOf(line[5]);
+			if(line[0].equals("1")){
+				//Album
+				String artist = line[6];
+				String title = line[7];
+				int releaseYear = Integer.parseInt(line[8]);
+				int lengthMinutes = Integer.parseInt(line[9]);
+				stock.add(new Album(price, warrantyMonths, discountPercent, distributor, productStatus, artist, title
+						, releaseYear, lengthMinutes));
+			}
+			if(line[0].equals("2")){
+				//Amplifier
+				int weight = Integer.parseInt(line[6]);
+				int wattage = Integer.parseInt(line[7]);
+				AmplifierType type = AmplifierType.valueOf(line[8]);
+				stock.add(new Amplifier(price, warrantyMonths, discountPercent, distributor, productStatus, weight,
+						wattage, type));
+			}
+			if(line[0].equals("3")){
+				//Instrument
+				String material = line[6];
+				String variant = line[7];
+				InstrumentType type = InstrumentType.valueOf(line[8]);
+				stock.add(new Instrument(price, warrantyMonths, discountPercent, distributor, productStatus, material
+						, variant, type));
+			}
+		}
+	}
+	
+	private void writeInCSV(){
+		try{
+			FileWriter fw = new FileWriter("src/Data/stock.csv");
+			for(Product product: stock){
+				if(product instanceof Album album){
+					fw.write("1, " +
+							album.getPrice() + ", " +
+							album.getWarrantyMonths() + ", " +
+							album.getDiscountPercent() + ", " +
+							album.getDistributor().getName() + ", " +
+							album.getStatus().name() + ", " +
+							album.getArtist() + ", " +
+							album.getTitle() + ", " +
+							album.getReleaseYear() + ", " +
+							album.getLengthMinutes() + "\n");
+				}
+				if(product instanceof Amplifier amplifier){
+					fw.write("2, " +
+							amplifier.getPrice() + ", " +
+							amplifier.getWarrantyMonths() + ", " +
+							amplifier.getDiscountPercent() + ", " +
+							amplifier.getDistributor().getName() + ", " +
+							amplifier.getStatus().name() + ", " +
+							amplifier.getWeight() + ", " +
+							amplifier.getWattage() + ", " +
+							amplifier.getAmplifierType().name() + "\n");
+				}
+				if(product instanceof Instrument instrument){
+					fw.write("3, " +
+							instrument.getPrice() + ", " +
+							instrument.getWarrantyMonths() + ", " +
+							instrument.getDiscountPercent() + ", " +
+							instrument.getDistributor().getName() + ", " +
+							instrument.getStatus().name() + ", " +
+							instrument.getMaterial() + ", " +
+							instrument.getVariant() + ", " +
+							instrument.getInstrumentType().name() + "\n");
+				}
+			}
+			fw.close();
+		}
+		catch(IOException exception){
+			System.out.println(exception.getMessage());
+		}
+	}
+	
+	private static List<String[]> getFromCSV(String path){
+		List <String[]> columns = new ArrayList<String[]>();
+		try(var input = new BufferedReader(new FileReader(path))){
+			String line;
+			while((line = input.readLine()) != null) {
+				String[] info = line.replaceAll(" ", "").split(",");
+				columns.add(info);
+			}
+		}
+		catch(IOException exception){
+			System.out.println(exception.getMessage());
+		}
+		return columns;
 	}
 	
 	public List<Product> getStock() {
 		return stock;
+	}
+	
+	public void updateStockCSV(){
+		this.writeInCSV();
 	}
 	
 	public void setStock(List<Product> stock) {
